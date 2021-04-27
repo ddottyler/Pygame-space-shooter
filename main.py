@@ -28,14 +28,14 @@ BG = pygame.transform.scale(pygame.image.load(
 class Player:
     COOLDOWN = 30
 
-    def __init__(self, x, y, health=100)
-    self.x = x
-    self.y = y
-    self.health = health
-    self.player_img = None
-    self.laser_img = None
-    self.lasers = []
-    self.cool_down_counter = 0
+    def __init__(self, x, y, health=100):
+        self.x = x
+        self.y = y
+        self.health = health
+        self.player_img = None
+        self.laser_img = None
+        self.lasers = []
+        self.cool_down_counter = 0
 
     def draw(self, window):
         window.blit(self.player_img, (self.x, self.y))
@@ -48,15 +48,18 @@ class Player:
         elif self.cool_down_counter > 0:
             self.cool_down_counter += 1
 
-    def move_lasers(self, vel, obj):
+    def move_lasers(self, vel, objs):
         self.cooldown()
         for laser in self.lasers:
             laser.move(vel)
             if laser.off_screen(HEIGHT):
                 self.lasers.remove(laser)
-            elif laser.collision(obj):
-                obj.health -= REDUCE_HEALTH
-                self.lasers.remove(laser)
+            else:
+                for obj in objs:
+                    if laser.collision(obj):
+                        objs.remove(obj)
+                        if laser in self.lasers:
+                            self.lasers.remove(laser)
 
     def shoot(self):
         if self.cool_down_counter == 0:
@@ -71,12 +74,31 @@ class Player:
         return self.player_img.get_height()
 
 
+class Player_1(Player):
+    def __init__(self, x, y, health=100)
+    super().__init__(x, y, health)
+    self.player_img = PLAYER_1
+    self.laser_img = PLAYER_1_LASER
+    self.mask = pygame.mask.from_surface(self.player_img)
+    self.max_health = health
+
+    def draw(self, window):
+        super().draw(window)
+        self.healthbar(window)
+
+    def healthbar(self, window):
+        pygame.draw.rect(window, (255, 0, 0), (self.x, self.y +
+                         self.player_img.get_height() + 10, self.player_img.get_width(), 10))
+        pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.player_img.get_height() +
+                         10, self.player_img.get_width() * (self.health/self.max_health), 10))
+
+
 class Laser:
-    def __init__(self, x, y, img)
-    self.x = x
-    self.y = y
-    self.img = img
-    self.mask = pygame.mask.from_surface(self.img)
+    def __init__(self, x, y, img):
+        self.x = x
+        self.y = y
+        self.img = img
+        self.mask = pygame.mask.from_surface(self.img)
 
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
