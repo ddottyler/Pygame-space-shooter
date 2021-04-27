@@ -75,12 +75,12 @@ class Player:
 
 
 class Player_1(Player):
-    def __init__(self, x, y, health=100)
-    super().__init__(x, y, health)
-    self.player_img = PLAYER_1
-    self.laser_img = PLAYER_1_LASER
-    self.mask = pygame.mask.from_surface(self.player_img)
-    self.max_health = health
+    def __init__(self, x, y, health=100):
+        super().__init__(x, y, health)
+        self.player_img = PLAYER_1
+        self.laser_img = PLAYER_1_LASER
+        self.mask = pygame.mask.from_surface(self.player_img)
+        self.max_health = health
 
     def draw(self, window):
         super().draw(window)
@@ -113,14 +113,34 @@ class Laser:
         return collide(obj, self)
 
 
+def collide(obj1, obj2):
+    offset_x = obj2.x - obj.x
+    offset_y = obj2.y - obj1.y
+    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+
+
 def main():
     run = True
     FPS = 60
 
+    PLAYER_VEL = 5
+    LASER_VEL = 5
+
+    player_1 = Player_1(300, 630)
+
     clock = pygame.time.Clock()
+
+    lost = False
+    lost_count = 0
 
     def redraw_window():
         WIN.blit(BG, (0, 0))
+
+        player_1.draw(WIN)
+
+        if lost:
+            lost_label = lost_font.render("You lost!!", 1, (255, 0, 0))
+            WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
 
@@ -128,9 +148,31 @@ def main():
         clock.tick(FPS)
         redraw_window()
 
+        if player_1.health <= 0:
+            lost = True
+            lost_count += 1
+
+        if lost:
+            if lost_count > FPS * 3:
+                run = False
+            else:
+                continue
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and player_1.x - PLAYER_VEL > 0:  # left
+            player_1.x -= PLAYER_VEL
+        if keys[pygame.K_RIGHT] and player_1.x + PLAYER_VEL + player_1.get_width() < WIDTH:  # right
+            player_1.x += PLAYER_VEL
+        if keys[pygame.K_UP] and player_1.y - PLAYER_VEL > 0:  # up
+            player_1.y -= PLAYER_VEL
+        if keys[pygame.K_DOWN] and player_1.y + PLAYER_VEL + player_1.get_height() + 15 < HEIGHT:  # down
+            player_1.y += PLAYER_VEL
+        if keys[pygame.K_SPACE]:
+            player_1.shoot()
 
 
 main()
