@@ -143,6 +143,7 @@ def main():
     LASER_VEL = 5
 
     player_1 = Player_1(300, 630)
+    player_2 = Player_2(300, 315)
 
     clock = pygame.time.Clock()
 
@@ -153,6 +154,7 @@ def main():
         WIN.blit(BG, (0, 0))
 
         player_1.draw(WIN)
+        player_2.draw(WIN)
 
         if lost:
             lost_label = lost_font.render("You lost!!", 1, (255, 0, 0))
