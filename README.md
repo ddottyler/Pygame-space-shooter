@@ -4,7 +4,7 @@
 
 ## Project overview
 
-Building on the skills I learnt from my (first pygame project)[https://github.com/ddottyler/Space-invaders], this project is a simple locally run 2 player pygame application.
+Building on the skills I learnt from my [first pygame project](https://github.com/ddottyler/Space-invaders), this project is a simple locally run 2 player pygame application.
 
 Shoot the other ship to win!
 
