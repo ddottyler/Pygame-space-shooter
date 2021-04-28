@@ -24,6 +24,9 @@ PLAYER_2_LASER = pygame.image.load(
 BG = pygame.transform.scale(pygame.image.load(
     os.path.join("assets", "background.png")), (WIDTH, HEIGHT))
 
+# CONSTANTS
+REDUCE_HEALTH = 10
+
 
 class Player:
     COOLDOWN = 30
@@ -130,7 +133,7 @@ class Laser:
 
 
 def collide(obj1, obj2):
-    offset_x = obj2.x - obj.x
+    offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
@@ -185,6 +188,7 @@ def main():
                 run = False
 
         keys = pygame.key.get_pressed()
+        # player 1
         if keys[pygame.K_LEFT] and player_1.x - PLAYER_VEL > 0:  # left
             player_1.x -= PLAYER_VEL
         if keys[pygame.K_RIGHT] and player_1.x + PLAYER_VEL + player_1.get_width() < WIDTH:  # right
@@ -195,6 +199,7 @@ def main():
             player_1.y += PLAYER_VEL
         if keys[pygame.K_SPACE]:
             player_1.shoot()
+        # player 2
         if keys[pygame.K_a] and player_2.x - PLAYER_VEL > 0:  # left
             player_2.x -= PLAYER_VEL
         if keys[pygame.K_d] and player_2.x + PLAYER_VEL + player_2.get_width() < WIDTH:  # right
@@ -205,6 +210,9 @@ def main():
             player_2.y += PLAYER_VEL
         if keys[pygame.K_f]:
             player_2.shoot()
+
+        player_1.move_lasers(-LASER_VEL, player_2)
+        player_2.move_lasers(LASER_VEL, player_1)
 
 
 main()
