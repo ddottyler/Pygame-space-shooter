@@ -170,6 +170,10 @@ def main():
             lost = True
             lost_count += 1
 
+        if player_2.health <= 0:
+            lost = True
+            lost_count += 1
+
         if lost:
             if lost_count > FPS * 3:
                 run = False
@@ -191,6 +195,16 @@ def main():
             player_1.y += PLAYER_VEL
         if keys[pygame.K_SPACE]:
             player_1.shoot()
+        if keys[pygame.K_a] and player_2.x - PLAYER_VEL > 0:  # left
+            player_2.x -= PLAYER_VEL
+        if keys[pygame.K_d] and player_2.x + PLAYER_VEL + player_2.get_width() < WIDTH:  # right
+            player_2.x += PLAYER_VEL
+        if keys[pygame.K_w] and player_2.y - PLAYER_VEL > 0:  # up
+            player_2.y -= PLAYER_VEL
+        if keys[pygame.K_s] and player_2.y + PLAYER_VEL + player_2.get_height() + 15 < HEIGHT:  # down
+            player_2.y += PLAYER_VEL
+        if keys[pygame.K_f]:
+            player_2.shoot()
 
 
 main()
