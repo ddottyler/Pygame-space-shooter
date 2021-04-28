@@ -142,6 +142,8 @@ def main():
     run = True
     FPS = 60
 
+    lost_font = pygame.font.SysFont("bahnschrift", 80)
+
     PLAYER_VEL = 5
     LASER_VEL = 5
 
@@ -150,8 +152,10 @@ def main():
 
     clock = pygame.time.Clock()
 
-    lost = False
-    lost_count = 0
+    p1_lost = False
+    p2_lost = False
+    p1_lost_count = 0
+    p2_lost_count = 0
 
     def redraw_window():
         WIN.blit(BG, (0, 0))
@@ -159,8 +163,12 @@ def main():
         player_1.draw(WIN)
         player_2.draw(WIN)
 
-        if lost:
-            lost_label = lost_font.render("You lost!!", 1, (255, 0, 0))
+        if p1_lost:
+            lost_label = lost_font.render("Player 1 lost!!", 1, (255, 0, 0))
+            WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
+
+        if p2_lost:
+            lost_label = lost_font.render("Player 2 lost!!", 1, (255, 0, 0))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
@@ -170,15 +178,21 @@ def main():
         redraw_window()
 
         if player_1.health <= 0:
-            lost = True
-            lost_count += 1
+            p1_lost = True
+            p1_lost_count += 1
 
         if player_2.health <= 0:
-            lost = True
-            lost_count += 1
+            p2_lost = True
+            p2_lost_count += 1
 
-        if lost:
-            if lost_count > FPS * 3:
+        if p1_lost:
+            if p1_lost_count > FPS * 3:
+                run = False
+            else:
+                continue
+
+        if p2_lost:
+            if p2_lost_count > FPS * 3:
                 run = False
             else:
                 continue
