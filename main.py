@@ -147,8 +147,8 @@ def main():
     PLAYER_VEL = 5
     LASER_VEL = 5
 
-    player_1 = Player_1(300, 630)
-    player_2 = Player_2(300, 315)
+    player_1 = Player_1(320, 600)
+    player_2 = Player_2(320, 70)
 
     clock = pygame.time.Clock()
 
@@ -164,11 +164,13 @@ def main():
         player_2.draw(WIN)
 
         if p1_lost:
-            lost_label = lost_font.render("Player 1 lost!!", 1, (255, 0, 0))
+            lost_label = lost_font.render(
+                "Player 2 won!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         if p2_lost:
-            lost_label = lost_font.render("Player 2 lost!!", 1, (255, 0, 0))
+            lost_label = lost_font.render(
+                "Player 1 won!!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
@@ -229,4 +231,30 @@ def main():
         player_2.move_lasers(LASER_VEL, player_1)
 
 
-main()
+def main_menu():
+    title_font = pygame.font.SysFont("bahnschrift", 70)
+    instruction_font = pygame.font.SysFont("bahnschrift", 30)
+    run = True
+    while run:
+        WIN.blit(BG, (0, 0))
+        p1_instruction_label = instruction_font.render(
+            "Player 1: Use arrow keys to move and spacebar to shoot", 1, (255, 255, 255))
+        p2_instruction_label = instruction_font.render(
+            "Player 2: Use a, w, s, d keys to move and f key to shoot", 1, (255, 255, 255))
+        title_label = title_font.render(
+            "Press the mouse to begin...", 1, (255, 255, 255))
+        WIN.blit(p1_instruction_label, (WIDTH/2 -
+                 p1_instruction_label.get_width()/2, 670))
+        WIN.blit(p2_instruction_label, (WIDTH/2 -
+                 p2_instruction_label.get_width()/2, 710))
+        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main()
+    pygame.quit()
+
+
+main_menu()
