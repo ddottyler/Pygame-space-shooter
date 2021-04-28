@@ -165,12 +165,12 @@ def main():
 
         if p1_lost:
             lost_label = lost_font.render(
-                "Player 2 won!", 1, (255, 255, 255))
+                "Yellow won!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         if p2_lost:
             lost_label = lost_font.render(
-                "Player 1 won!!", 1, (255, 255, 255))
+                "Blue won!!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()

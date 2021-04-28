@@ -2,6 +2,8 @@
 
 ## Project in action
 
+<img src="./assets/spaceshootergif.gif" />
+
 ## Project overview
 
 Building on the skills I learnt from my [first pygame project](https://github.com/ddottyler/Space-invaders), this project is a simple locally run 2 player pygame application.
@@ -22,7 +24,7 @@ Once you have cloned and opened the repo:
 
 - Alternatively, if using VS Code, use the built in python play button in the top right hand corner while main.py is open.
 
-## Controls
+## How to control the players
 
 Blue
 
